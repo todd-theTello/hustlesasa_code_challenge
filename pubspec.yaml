@@ -72,17 +72,31 @@ flutter:
      - assets/images/
 
 
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+  #  w100 → Thin, the least thick
+  #  w200 → Extra-light
+  #  w300 → Light
+  #  w400 → Normal / regular / plain
+  #  w500 → Medium
+  #  w600 → Semi-bold
+  #  w700 → Bold
+  #  w800 → Extra-bold
+  #  w900 → Black, the most thick
+
+
+  fonts:
+    - family: GT Walsheim Pro
+      fonts:
+
+
+        - asset: assets/fonts/GTWalsheimPro-Light.ttf
+          weight: 300
+
+        - asset: assets/fonts/GTWalsheimPro-Regular.ttf
+          weight: 400
+
+        - asset: assets/fonts/GTWalsheimPro-Medium.ttf
+          weight: 500
+     
+        - asset: assets/fonts/GTWalsheimPro-Bold.ttf
+          weight: 700
+
