@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../../../models/messages.dart';
 import '../../../../utils/color.dart';
 import '../../../../utils/space.dart';
+import '../../../core/models/messages.dart';
 import '../../theme/text_styles.dart';
 import '../circle_container.dart';
 
 part 'my_chat_bubble_paint.dart';
 part 'other_chat_bubble_paint.dart';
 
+/// Chat message bubble
 class MessageBubble extends StatelessWidget {
+  /// constructor
   const MessageBubble({required this.message, super.key});
+
+  /// message entity
   final Message message;
   @override
   Widget build(BuildContext context) {
@@ -41,10 +45,7 @@ class MessageBubble extends StatelessWidget {
                             ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.file(message.image!)),
                             kVerticalSpace8
                           ],
-                          Text(
-                            message.content,
-                            style: kLabelStyle.copyWith(color: Colors.white),
-                          ),
+                          Text(message.content, style: kLabelStyle.copyWith(color: Colors.white)),
                         ],
                       ),
                     ),
@@ -80,10 +81,7 @@ class MessageBubble extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: Text(
                       'PP',
-                      style: kLabelStyle.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFFC57754),
-                      ),
+                      style: kLabelStyle.copyWith(fontWeight: FontWeight.w700, color: const Color(0xFFC57754)),
                     ),
                   ),
                   kHorizontalSpace14,
@@ -93,10 +91,7 @@ class MessageBubble extends StatelessWidget {
                         painter: OtherChatBubble(),
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
-                          constraints: BoxConstraints(
-                            minWidth: 64,
-                            maxWidth: MediaQuery.sizeOf(context).width * 0.7,
-                          ),
+                          constraints: BoxConstraints(minWidth: 64, maxWidth: MediaQuery.sizeOf(context).width * 0.7),
                           child: Text(
                             message.content,
                             style: kLabelStyle.copyWith(color: Colors.black.withOpacity(0.8)),

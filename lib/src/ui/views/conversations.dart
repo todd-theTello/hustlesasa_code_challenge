@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 
-import '../../../main.dart';
-import '../../../models/conversation.dart';
-import '../../../models/messages.dart';
-import '../../../states/customers/customer_controller.dart';
+import '../../../app.dart';
 import '../../../utils/color.dart';
 import '../../../utils/extensions.dart';
 import '../../../utils/extensions/date_time.dart';
 import '../../../utils/space.dart';
+import '../../core/models/conversation.dart';
+import '../../core/models/messages.dart';
+import '../../core/states/customers/customer_controller.dart';
 import '../theme/text_styles.dart';
 import '../widgets/animated_scale.dart';
 import '../widgets/circle_container.dart';
 import 'customers.dart';
 import 'messages.dart';
 
+/// Conversation view
 class ConversationsView extends StatelessWidget {
+  /// Constructor
   const ConversationsView({required this.controller, super.key});
+
+  /// constructor
   final CustomerController controller;
 
   @override
@@ -32,12 +36,12 @@ class ConversationsView extends StatelessWidget {
 
           if (value is CustomerSuccess) {
             final conversations = List.generate(
-              value.customer.length,
+              value.customers.length,
               (index) => Conversation(
-                name: '${value.customer[index].firstName} ${value.customer[index].lastName}',
+                name: '${value.customers[index].firstName} ${value.customers[index].lastName}',
                 lastMessage: DateTime.now().subtract(Duration(days: index)),
                 lastConversation: generateRandomString(40),
-                image: value.customer[index].avatar,
+                image: value.customers[index].avatar,
                 uid: generateRandomString(40),
                 isRead: !(index % 3 == 0),
                 messages: const <Message>[],
@@ -46,7 +50,7 @@ class ConversationsView extends StatelessWidget {
             return ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               itemBuilder: (context, index) {
-                final data = value.customer[index];
+                final data = value.customers[index];
                 final conversation = conversations[index];
                 return CustomAnimatedScale(
                   onPressed: () {
@@ -119,7 +123,7 @@ class ConversationsView extends StatelessWidget {
                 );
               },
               separatorBuilder: (context, index) => kVerticalSpace16,
-              itemCount: value.customer.length,
+              itemCount: value.customers.length,
             );
           }
           if (value is CustomerFailure) {

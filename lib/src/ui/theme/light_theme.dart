@@ -3,6 +3,7 @@ import 'package:hustlesasa_code_challenge/utils/color.dart';
 
 import 'text_styles.dart';
 
+/// light theme data
 final ThemeData lightTheme = ThemeData(
   primaryColor: const Color(0xFF00CC99),
   appBarTheme: AppBarTheme(

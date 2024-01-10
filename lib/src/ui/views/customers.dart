@@ -4,15 +4,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../models/customer.dart';
-import '../../../states/customers/customer_controller.dart';
 import '../../../utils/color.dart';
 import '../../../utils/space.dart';
+import '../../core/models/customer.dart';
+import '../../core/states/customers/customer_controller.dart';
 import '../theme/text_styles.dart';
 import '../widgets/animated_scale.dart';
 import 'messages.dart';
 
+/// Customer View
 class CustomersView extends StatelessWidget {
+  /// constructor
   const CustomersView({required this.controller, required this.scrollController, this.isSelectPage = false, super.key});
   final CustomerController controller;
   final ScrollController scrollController;
@@ -37,7 +39,7 @@ class CustomersView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 controller: scrollController,
                 itemBuilder: (context, index) {
-                  final data = value.customer[index];
+                  final data = value.customers[index];
                   return Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -53,7 +55,7 @@ class CustomersView extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             if (isSelectPage) {
-                              controller.selectCustomer(selectedCustomer: data, customers: value.customer);
+                              controller.selectCustomer(selectedCustomer: data, customers: value.customers);
                             }
                           },
                           child: ImageWidget(
@@ -75,11 +77,11 @@ class CustomersView extends StatelessWidget {
                         ),
                         CustomAnimatedScale(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).push<void>(MaterialPageRoute(
                               builder: (_) => const MessageView(),
                             ));
                           },
-                          child: Container(
+                          child: ColoredBox(
                             color: Colors.white,
                             child: Column(
                               children: [
@@ -115,7 +117,7 @@ class CustomersView extends StatelessWidget {
                 separatorBuilder: (context, index) {
                   return kVerticalSpace16;
                 },
-                itemCount: value.customer.length,
+                itemCount: value.customers.length,
               );
             }
             if (value is CustomerFailure) {
@@ -133,10 +135,15 @@ class CustomersView extends StatelessWidget {
   }
 }
 
+/// Image avatar widget for customer and conversation card
 class ImageWidget extends StatelessWidget {
-  const ImageWidget({super.key, required this.data, this.isSelectPage = false});
+  /// constructor
+  const ImageWidget({required this.data, super.key, this.isSelectPage = false});
 
+  /// Customer data
   final Customer data;
+
+  /// check if current page is customer select page
   final bool isSelectPage;
 
   @override

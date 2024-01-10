@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../main.dart';
-import '../../../models/messages.dart';
-import '../../../states/messages/messages_controller.dart';
+import '../../../app.dart';
 import '../../../utils/extensions.dart';
 import '../../../utils/platform/image.dart';
 import '../../../utils/space.dart';
+import '../../core/models/messages.dart';
+import '../../core/states/messages/messages_controller.dart';
 import '../theme/text_styles.dart';
 import '../widgets/message_bubbles/message_bubble.dart';
 

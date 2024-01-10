@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../states/customers/customer_controller.dart';
 import '../../../utils/extensions.dart';
 import '../../../utils/space.dart';
+import '../../core/states/customers/customer_controller.dart';
 import '../theme/text_styles.dart';
 import '../widgets/animated_scale.dart';
 import '../widgets/text_fields/search_input_decoration.dart';
@@ -13,6 +13,8 @@ import 'customers.dart';
 class SelectCustomersView extends StatefulWidget {
   ///
   const SelectCustomersView({required this.customerController, super.key});
+
+  ///
   final CustomerController customerController;
 
   @override
@@ -56,7 +58,7 @@ class _SelectCustomersViewState extends State<SelectCustomersView> {
                               if (selected is CustomerSuccess) {
                                 selectAll.value = !selectAll.value;
                                 widget.customerController.selectOrDeselectAll(
-                                  customers: selected.customer,
+                                  customers: selected.customers,
                                   isSelect: selectAll.value,
                                 );
                               }
@@ -77,8 +79,8 @@ class _SelectCustomersViewState extends State<SelectCustomersView> {
                       ),
                       if (selected is CustomerSuccess)
                         Text(
-                          selected.customer.where((element) => element.isSelected).isNotEmpty
-                              ? selected.customer.where((element) => element.isSelected).length.toString()
+                          selected.customers.where((element) => element.isSelected).isNotEmpty
+                              ? selected.customers.where((element) => element.isSelected).length.toString()
                               : 'Select Customer',
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.800000011920929),
@@ -121,7 +123,7 @@ class _SelectCustomersViewState extends State<SelectCustomersView> {
                 },
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 10, 16, 10.0),
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
                 child: TextField(
                   controller: search,
                   readOnly: true,
@@ -141,10 +143,14 @@ class _SelectCustomersViewState extends State<SelectCustomersView> {
   }
 }
 
+/// Delete customer dialog
 class DeleteDialog extends StatelessWidget {
+  /// constructor
   const DeleteDialog({required this.widget, required this.selected, super.key});
-
+//// state widget
   final SelectCustomersView widget;
+
+  /// CustomerValue
   final CustomerSuccess selected;
   @override
   Widget build(BuildContext context) {
@@ -197,7 +203,7 @@ class DeleteDialog extends StatelessWidget {
                     ),
                     onPressed: () {
                       widget.customerController.deleteSelected(
-                        customers: selected.customer,
+                        customers: selected.customers,
                       );
 
                       Navigator.of(context).popUntil((route) => route.isFirst);
