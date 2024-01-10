@@ -19,7 +19,7 @@ class JwtDecoder {
       final decodedPayload = jsonDecode(payloadString);
 
       // Return the decoded payload
-      return decodedPayload;
+      return decodedPayload as Map<String, dynamic>;
     } catch (error) {
       throw const FormatException('Invalid payload');
     }

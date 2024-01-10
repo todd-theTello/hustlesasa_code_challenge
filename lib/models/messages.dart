@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 @immutable
@@ -10,6 +12,8 @@ class Message {
     required this.senderName,
     required this.senderImage,
     required this.sentTime,
+    required this.isMe,
+    this.image,
     required this.content,
   });
   final String id;
@@ -17,7 +21,9 @@ class Message {
   final String senderName;
   final String senderImage;
   final String content;
+  final bool isMe;
   final DateTime sentTime;
+  final File? image;
 
   @override
   bool operator ==(covariant Message other) => identical(this, other) || (id == other.id);

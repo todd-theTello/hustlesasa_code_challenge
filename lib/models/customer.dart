@@ -19,12 +19,12 @@ class CustomerResponse {
   });
 
   factory CustomerResponse.fromJson(dynamic json) => CustomerResponse(
-        page: json["page"],
-        perPage: json["per_page"],
-        total: json["total"],
-        totalPages: json["total_pages"],
-        data: List<Customer>.from(json["data"].map((x) => Customer.fromJson(x))),
-        support: Support.fromJson(json["support"]),
+        page: int.parse(json['page'].toString()),
+        perPage: int.parse(json['per_page'].toString()),
+        total: int.parse(json['total'].toString()),
+        totalPages: int.parse(json['total_pages'].toString()),
+        data: List<Customer>.from((json['data'] as List<dynamic>).map(Customer.fromJson)),
+        support: Support.fromJson(json['support']),
       );
 }
 
@@ -37,22 +37,35 @@ class Customer {
   final String firstName;
   final String lastName;
   final String avatar;
-
+  final bool isSelected;
   const Customer({
     required this.id,
     required this.email,
     required this.firstName,
     required this.lastName,
     required this.avatar,
+    required this.isSelected,
   });
 
   factory Customer.fromJson(dynamic json) => Customer(
-        id: json["id"],
-        email: json["email"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        avatar: json["avatar"],
+        id: int.parse(json['id'].toString()),
+        email: json['email'] as String,
+        firstName: json['first_name'] as String,
+        lastName: json['last_name'] as String,
+        avatar: json['avatar'] as String,
+        isSelected: false,
       );
+  Customer copyWithIsSelected({required bool isSelected}) {
+    return Customer(
+      id: id,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      avatar: avatar,
+      isSelected: isSelected,
+    );
+  }
+
   @override
   bool operator ==(covariant Customer other) => identical(this, other) || (id == other.id);
 
@@ -66,5 +79,5 @@ class Support {
 
   Support({required this.url, required this.text});
 
-  factory Support.fromJson(dynamic json) => Support(url: json["url"], text: json["text"]);
+  factory Support.fromJson(dynamic json) => Support(url: json['url'].toString(), text: json['text'].toString());
 }

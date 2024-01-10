@@ -1,15 +1,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:hustlesasa_code_challenge/models/customer.dart';
-import 'package:hustlesasa_code_challenge/states/customers/customer_controller.dart';
-import 'package:hustlesasa_code_challenge/utils/color.dart';
-import 'package:hustlesasa_code_challenge/utils/space.dart';
-import 'package:hustlesasa_code_challenge/views/conversations.dart';
-import 'package:hustlesasa_code_challenge/views/customers.dart';
-import 'package:hustlesasa_code_challenge/views/select_customers.dart';
-import 'package:hustlesasa_code_challenge/widgets/animated_scale.dart';
-import 'package:hustlesasa_code_challenge/widgets/circle_container.dart';
+
+import 'models/customer.dart';
+import 'src/ui/theme/light_theme.dart';
+import 'src/ui/theme/text_styles.dart';
+import 'src/ui/views/conversations.dart';
+import 'src/ui/views/customers.dart';
+import 'src/ui/views/select_customers.dart';
+import 'src/ui/widgets/animated_scale.dart';
+import 'src/ui/widgets/circle_container.dart';
+import 'src/ui/widgets/text_fields/search_input_decoration.dart';
+import 'states/customers/customer_controller.dart';
+import 'utils/space.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,10 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF00CC99)),
-        useMaterial3: true,
-      ),
+      theme: lightTheme,
       home: const HustleSasaRoot(),
     );
   }
@@ -80,14 +80,14 @@ class _HustleSasaRootState extends State<HustleSasaRoot> with SingleTickerProvid
                     if (data is CustomerSuccess) {
                       return FloatingActionButton.extended(
                         onPressed: () {
-                          print('clicked');
                           customerController.addCustomer(
                             newCustomer: Customer(
-                              id: Random.secure().toString().length,
-                              email: Random.secure().toString(),
-                              firstName: Random.secure().toString(),
-                              lastName: Random.secure().toString(),
-                              avatar: Random.secure().toString(),
+                              id: generateRandomString(12).hashCode,
+                              email: generateRandomString(15),
+                              firstName: generateRandomString(10),
+                              lastName: generateRandomString(12),
+                              avatar: generateRandomString(20),
+                              isSelected: false,
                             ),
                             oldCustomers: data.customer,
                           );
@@ -108,22 +108,7 @@ class _HustleSasaRootState extends State<HustleSasaRoot> with SingleTickerProvid
       appBar: AppBar(
         toolbarHeight: 62,
         backgroundColor: const Color(0xFFF7F7F7),
-        title: const Text(
-          'Customers',
-          style: TextStyle(
-            color: Color(0xFF322644),
-            fontSize: 16,
-            fontFamily: 'GT Walsheim Pro',
-            fontWeight: FontWeight.w700,
-            height: 20,
-          ),
-        ),
-        titleTextStyle: theme.textTheme.headlineMedium?.copyWith(
-          height: 22 / 17,
-          fontSize: 17,
-          fontWeight: FontWeight.w700,
-          color: const Color(0xFF322644),
-        ),
+        title: Text('Customers'),
         automaticallyImplyLeading: false,
         titleSpacing: 20,
         centerTitle: true,
@@ -135,7 +120,7 @@ class _HustleSasaRootState extends State<HustleSasaRoot> with SingleTickerProvid
                   return CustomAnimatedScale(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const SelectCustomersView(),
+                        builder: (_) => SelectCustomersView(customerController: customerController),
                       ));
                     },
                     child: Container(
@@ -157,28 +142,11 @@ class _HustleSasaRootState extends State<HustleSasaRoot> with SingleTickerProvid
                   controller: search,
                   readOnly: true,
                   onTap: () {},
-                  decoration: searchFieldInputDecorator,
+                  decoration: kSearchFieldInputDecorator,
                 ),
               ),
               TabBar(
                 controller: tabController,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicatorColor: kPrimaryColor,
-                labelPadding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                labelStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'GT Walsheim Pro',
-                  fontWeight: FontWeight.w500,
-                  height: 0,
-                ),
-                labelColor: kPrimaryColor,
-                unselectedLabelColor: const Color(0xFF626266),
-                unselectedLabelStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'GT Walsheim Pro',
-                  fontWeight: FontWeight.w500,
-                  height: 0,
-                ),
                 tabs: [
                   const Text('Customers'),
                   Row(
@@ -186,18 +154,15 @@ class _HustleSasaRootState extends State<HustleSasaRoot> with SingleTickerProvid
                     children: [
                       const Text('Conversations'),
                       kHorizontalSpace8,
-                      CircleContainer(
-                        color: Colors.black.withOpacity(0.05),
-                        padding: const EdgeInsets.all(8),
-                        child: const Text(
-                          '2',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'GT Walsheim Pro',
-                            fontWeight: FontWeight.w500,
-                            height: 0,
-                          ),
-                        ),
+                      ValueListenableBuilder(
+                        valueListenable: isCustomer,
+                        builder: (context, customer, _) {
+                          return CircleContainer(
+                            color: customer ? Colors.black.withOpacity(0.05) : const Color(0xFFEEFEFA),
+                            padding: const EdgeInsets.all(8),
+                            child: Text('2', style: kLabelStyle.copyWith(fontSize: 12)),
+                          );
+                        },
                       )
                     ],
                   )
@@ -212,25 +177,15 @@ class _HustleSasaRootState extends State<HustleSasaRoot> with SingleTickerProvid
         physics: const NeverScrollableScrollPhysics(),
         children: [
           CustomersView(controller: customerController, scrollController: customersScroll),
-          const ConversationsView(),
+          ConversationsView(controller: customerController),
         ],
       ),
     );
   }
 }
 
-InputDecoration searchFieldInputDecorator = InputDecoration(
-  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-  prefixIcon: const Icon(Icons.search, color: Color(0xFF626266)),
-  hintText: 'Search for a customer…',
-  hintStyle: const TextStyle(
-    color: Color(0xFF626266),
-    fontSize: 12,
-    fontFamily: 'GT Walsheim Pro',
-    fontWeight: FontWeight.w500,
-    height: 14 / 12,
-  ),
-  filled: true,
-  fillColor: Colors.white,
-  border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
-);
+String generateRandomString(int length) {
+  const charset = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  Random random = Random();
+  return String.fromCharCodes(Iterable.generate(length, (_) => charset.codeUnitAt(random.nextInt(charset.length))));
+}

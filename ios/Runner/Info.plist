@@ -12,6 +12,12 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+		<key>NSCameraUsageDescription</key>
+    		<string>The app needs access to camera in order to upload images for profile picture as well as service and booking image</string>
+    		<key>NSMicrophoneUsageDescription</key>
+    		<string>The app does no use microphone currently</string>
+    		<key>NSPhotoLibraryUsageDescription</key>
+    		<string>The app needs access to photo library in order to upload images for profile picture as well as service and booking image</string>
 	<key>CFBundleName</key>
 	<string>hustlesasa_code_challenge</string>
 	<key>CFBundlePackageType</key>
